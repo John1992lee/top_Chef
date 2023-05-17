@@ -173,15 +173,29 @@ function searchCuisines(allDishes) {
 }
 
 function searchIngredients(allDishes) {
+    let ingredientInput = prompt("What type of ingredient are you searching? corn, beef, tomato, chickpea, parsely, cheese, sugar, flour, cabbage: ")
+    let results = allDishes.filter(function(ingredtype) {
+        if (ingredtype.ingredients.includes(ingredientInput)) {
+            return true;
+        } else {
+            return false;
+        }
+    })
     alert("Searching for dishes by ingredient...")
     // TODO #4: Gather user input for an ingredient to search for, then filter for all dishes that INCLUDE this ingredient in their ingredients array property
     alert("Found all dishes that contain the ingredient search term!  Check the console for full output")
+    return results
 }
+
 
 function generateCuisineDishName(allDishes) {
     alert("Combining cuisine and dish names...")
+    let results = allDishes.filter(function(cb) {
+        return cb.cuisine + ' ' + cb.name
+    })
     // TODO #5: Apply the concatenatorFunction to each dish in allDishes, then log to the console the modified result
     alert("Successfully combined cuisine and dish names!  Check the console for full output.")
+    return results
 }
 
 // <<<<<<<<<<<<<<<<< EMAIL AND TEXT MARKETING MESSAGES <<<<<<<<<<<<<<<<<
@@ -194,7 +208,7 @@ function emailMessage(dishOfTheDay) {
     Thank you for subscribing to email alert messages!
     Today's Dish of the day is:
 
-    <DISH OF THE DAY HERE>
+    ${(dishOfTheDay)}
 
     We hope to see you in soon!
 
@@ -215,7 +229,7 @@ function textMessage(dishOfTheDay) {
     This is an automated text message alert.
     Today's Dish of the day is:
 
-    <DISH OF THE DAY HERE>
+    ${(dishOfTheDay)}
 
     We hope to see you in soon!
 
@@ -229,10 +243,12 @@ function textMessage(dishOfTheDay) {
 }
 
 function generateMarketingMessage(dishOfTheDay, messageTypeCallback) {
+    let emailMessType = messageTypeCallback(dishOfTheDay);
     alert('Sending final message to all 389 customers...')
     // TODO #7: Call the passed-in callback function on the dishOfTheDay.  Save the result as a variable
     // Then, log that result to the console
     alert('Success!  Check the console for a copy of the final marketing message!')
+    return emailMessType
 }
 
 // <<<<<<<<<<<<<<<<< CUSTOM PROMPT FUNCTION <<<<<<<<<<<<<<<<<
@@ -244,6 +260,27 @@ function customPrompt(promptQuestion, arrayOfValidResponses) {
         response = prompt(promptQuestion)
     }
     return response
+}
+
+function consoleLogList (allDishes) {
+    allDishSearch = ''
+    for (let i = 0; i < allDishes.length; i++){
+        allDishSearch += "\nID: "+ allDishes[i].id +
+        "\nName: " + allDishes[i].name + 
+        "\nCuisines: " + allDishes[i].cuisine + 
+        "\nServings: " + allDishes[i].servings + 
+        "\nIngredients: " + allDishes[i].ingredients
+    }
+    return allDishSearch
+}
+
+function concatDishes(allDishes) {
+    allDishSearch = ""
+    for (let i = 0; i < allDishes.length; i++){
+        allDishSearch += allDishes[i].cuisine + 
+        '\n' + allDishes[i].name 
+    }
+    return allDishSearch
 }
 
 // <<<<<<<<<<<<<<<<< MAIN MENU FUNCTION <<<<<<<<<<<<<<<<<
@@ -261,29 +298,33 @@ function runApp(allDishes, specialDish) {
     switch (userChoice) {
         case "1":
             let mexicanDishes = findMexicanFood(allDishes)
-            console.log(mexicanDishes)
+            console.log(consoleLogList(mexicanDishes))
             break
         case "2":
             let italianDishes = findItalianFood(allDishes)
-            console.log(italianDishes)
+            console.log(consoleLogList(italianDishes))
             break
         case "3":
             let cuisineSearchResults = searchCuisines(allDishes)
-            console.log(cuisineSearchResults)
+            console.log(consoleLogList(cuisineSearchResults))
             break
         case "4":
             let ingredientSearchResults = searchIngredients(allDishes)
-            console.log(ingredientSearchResults)
+            console.log(consoleLogList(ingredientSearchResults))
             break
         case "5":
             let concatenatedDishes = generateCuisineDishName(allDishes)
             console.log(concatenatedDishes)
             break
         case "6":
+            let emailMess = generateMarketingMessage(todaysSpecialDish, emailMessage)
+            console.log(emailMess)
             // TODO #8: Call the appropriate function to generate the marketing text message.  
             // You will need to provide today's dish and the appropriate callback function as arguments!
             break
         case "7":
+            let textMessType = generateMarketingMessage(todaysSpecialDish, textMessage)
+            console.log(textMessType)
             // TODO #9: Call the appropriate function to generate the marketing email message.  
             // You will need to provide today's dish and the appropriate callback function as arguments!
             break
