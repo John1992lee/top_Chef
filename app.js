@@ -158,7 +158,8 @@ function findItalianFood(allDishes) {
 }
 
 function searchCuisines(allDishes) {
-    let cuisinesInput = prompt("Which cuisines are you searching? Mexican, Italian, Hungarian, Vegetarian, Irish, French: ")
+    let cuisinesInput = customPrompt("Which cusisines are you searching for? Mexican, Italian, Hungarian, Vegetarian, Irish, French:", 
+    ["Mexican", "Italian", "Hungarian", "Vegetarian", "Irish", "French"])
     let result = allDishes.filter(function(prompt) {
         if (prompt.cuisine === cuisinesInput) {
             return true;
@@ -173,7 +174,8 @@ function searchCuisines(allDishes) {
 }
 
 function searchIngredients(allDishes) {
-    let ingredientInput = prompt("What type of ingredient are you searching? corn, beef, tomato, chickpea, parsely, cheese, sugar, flour, cabbage: ")
+    let ingredientInput = customPrompt(`What type of ingredient are you searching? corn, beef, tomato, chickpea, parsely, cheese, sugar, flour, cabbage:`, 
+    ["corn", "beef", "tomato", "chickpea", "parsely", "cheese", "sugar", "flour", "cabbage"])
     let results = allDishes.filter(function(ingredtype) {
         if (ingredtype.ingredients.includes(ingredientInput)) {
             return true;
@@ -190,7 +192,7 @@ function searchIngredients(allDishes) {
 
 function generateCuisineDishName(allDishes) {
     alert("Combining cuisine and dish names...")
-    let results = allDishes.filter(function(cb) {
+    let results = allDishes.map(function(cb) {
         return cb.cuisine + ' ' + cb.name
     })
     // TODO #5: Apply the concatenatorFunction to each dish in allDishes, then log to the console the modified result
@@ -208,7 +210,7 @@ function emailMessage(dishOfTheDay) {
     Thank you for subscribing to email alert messages!
     Today's Dish of the day is:
 
-    ${(dishOfTheDay)}
+    ${(dishOfTheDay.cuisine + " " + dishOfTheDay.name)}
 
     We hope to see you in soon!
 
@@ -229,7 +231,7 @@ function textMessage(dishOfTheDay) {
     This is an automated text message alert.
     Today's Dish of the day is:
 
-    ${(dishOfTheDay)}
+    ${(dishOfTheDay.cuisine + " " + dishOfTheDay.name)}
 
     We hope to see you in soon!
 
@@ -277,8 +279,7 @@ function consoleLogList (allDishes) {
 function concatDishes(allDishes) {
     allDishSearch = ""
     for (let i = 0; i < allDishes.length; i++){
-        allDishSearch += allDishes[i].cuisine + 
-        '\n' + allDishes[i].name 
+        allDishSearch += '\n' + allDishes[i]
     }
     return allDishSearch
 }
@@ -314,7 +315,7 @@ function runApp(allDishes, specialDish) {
             break
         case "5":
             let concatenatedDishes = generateCuisineDishName(allDishes)
-            console.log(concatenatedDishes)
+            console.log(concatDishes(concatenatedDishes))
             break
         case "6":
             let emailMess = generateMarketingMessage(todaysSpecialDish, emailMessage)
